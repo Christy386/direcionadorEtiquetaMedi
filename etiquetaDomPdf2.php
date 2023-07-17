@@ -14,7 +14,6 @@ $status = $dados1['status_solicitacao'];
 $tipo_impressao = $dados1['tipo_impressao_solicitacao'];
 
 
-
 $sql2 = "SELECT * FROM mapa_solicitacao_plan, plans_mio, status_plans_mio WHERE id_solicitacao = '$id_solicitacao_arquivo' AND id_tipo_solicitacao = $tipo_impressao AND plans_mio.id_plan_mio = mapa_solicitacao_plan.id_plan AND status_plans_mio.id_status_plans_mio = plans_mio.status_plan_mio";
 $buscar2 = mysqli_query($conexao,$sql2);
 $dados2 = mysqli_fetch_array($buscar2);
