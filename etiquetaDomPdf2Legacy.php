@@ -59,15 +59,6 @@ else{
 	$flagif = 2;
 }
 
-
-
-
-
-
-
-
-
-
 $options = new Options();
 $options->setChroot(__DIR__);
 
@@ -91,167 +82,183 @@ $msg='<head>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Helvetica, sans-serif;font-size:11px;
-	overflow:hidden;padding:2px 1px;word-break:normal;}
-	.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Helvetica, sans-serif;font-size:11px;
-		font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-		.tg .tg-0lax{text-align:left;vertical-align:top}
-		</style>
+.tg td{
+	border-color:black;
+	border-style:solid;
+	border-width:1px;
+	font-family:Helvetica, sans-serif;
+	font-size:11px;
+	overflow:hidden;
+	padding:2px 1px;
+	word-break:normal;
+}
+.tg th{
+	border-color:black;
+	border-style:solid;
+	border-width:1px;
+	font-family:Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	overflow:hidden;
+	padding:10px 5px;
+	word-break:normal;
+}
+.tg .tg-0lax{
+	text-align:left;
+	vertical-align:top
+}
+</style>
 
-		<style type="text/css">
-				.wrapper-page {
-			page-break-after: always;
+<style type="text/css">
+	.wrapper-page {
+		page-break-after: always;
+	}
+	.wrapper-page:last-child {
+		page-break-after: avoid;
+	}
+	.tgg  {
+		border-spacing:0;
+		white-space: pre-wrap;
+	}
+	.tgg td{
+		border-bottom: 1px solid #c0c0c0;
+		border-collapse: collapse;
+		border-top:0px;
+		border-bottom:0px;
+		font-family:Helvetica, sans-serif;
+		font-size:11px;
+		white-space: pre-wrap;
+		overflow:hidden;
+		padding:1px 1px;
+		word-break:normal;
+	}
+	.tgg th{
+		border-bottom: 1px solid #c0c0c0;
+		border-collapse: collapse;
+		border-top:0px;
+		border-bottom:0px;
+		font-family:Helvetica, sans-serif;
+		font-size:11px;
+		white-space: pre-wrap;
+		overflow:hidden;
+		padding:1px 1px;
+		word-break:normal;;
+	}
+	.tgg .tgg-w84r{
+		background-color:#9b9b9b;
+		border-color:##c0c0c0;
+		font-weight:bold;
+		text-align:left;
+		vertical-align:top;
+		white-space: pre-wrap;
+		padding:3px 3px;
+	}
+	.tgg .tgg-73oq{
+		border-color:##c0c0c0;
+		text-align:left;
+		vertical-align:top;
+		white-space: pre-wrap;
+	}
+	.tgg .tgg-0lax{
+		text-align:left;
+		vertical-align:top
+	}
+
+</style>
+
+
+
+<title></title>
+</head><font size="1" face="Helvetica">  
+<p>   
+	<img src="http://www.labpronto.com.br/hub/assets/img/brand/blue.jpg" align="left"style="width:163px;height:57px;">
+	<div align="right">
+		<br><b>CNPJ:</b> 37.605.824/0001-03<br>Av. Amintas Barros, 3700 Sala 1907 <br> Lagoa Nova - Natal/RN<br>
+		(84) 98634-6730<br>
+	</div>
+</p>
+';
+
+$flag=0;
+while($row_usuario = mysqli_fetch_assoc($buscar)){
+
+	$pedidoId = $row_usuario['id_solicitacao'];
+	$pedidoNome = $row_usuario['identificacao_pct_solicitacao'];
+	$usuario = $row_usuario['nome_usuario'];
+
+	$dataformat = new DateTime($row_usuario['data_solicitacao']);
+	$dataIn2 = $dataformat->format('Y-m-d H:i:s');
+	$dataIn = date('d/m/Y H:i', strtotime($dataIn2. ' -3 hours'));
+
+
+	$dataformat = new DateTime($row_usuario['finalizacao_solicitacao']);
+	$dataOut2 = $dataformat->format('Y-m-d H:i:s');
+	$dataOut = date('d/m/Y H:i', strtotime($dataOut2. ' -3 hours'));
+
+	$cor = $row_usuario['cor_impressao'];
+	$material = $row_usuario['material_impressao'];
+	$tipo = $row_usuario['tipo_impressao'];
+	$quantidade = $row_usuario['quantidade_solicitacao'];
+	$id_endereco = $row_usuario['id_endereco'];
+	if($row_usuario['complemento_endereco']==NULL){
+		$endereco = $row_usuario['logradouro_endereco'].", ".$row_usuario['numero_endereco'].", ".$row_usuario['bairro_endereco'].", ".$row_usuario['cidade_endereco']." - ".$row_usuario['cep_endereco'];
+	}
+	else{
+		$endereco = $row_usuario['logradouro_endereco'].", ".$row_usuario['numero_endereco']." - ".$row_usuario['complemento_endereco'].", ".$row_usuario['bairro_endereco'].", ".$row_usuario['cidade_endereco']." - ".$row_usuario['cep_endereco'];
+	}
+
+	if($flag==0){
+		$msg1 = '<label><div align="right"><img src="https://www.medi3d.com.br/hub/qrcodepng.php?id='. $codigoQr.'" align="right"style="width:85px;height:85px;"></div><div align="left"><br></label>
+			<div align="left"><b>Solicitação nº '.$pedidoId.' - '. $pedidoNome .'</b><br><br></div>
+			<label><b>Solicitante: </b><mark>'. $usuario.'</mark><br></label>
+			<label><b>Endereço: </b><mark>';
+		if($id_endereco==1){
+			$msg2='Retirada';
 		}
-		.wrapper-page:last-child {
-			page-break-after: avoid;
+		else{
+			$msg2=$endereco;
 		}
-		.tgg  {border-spacing:0;white-space: pre-wrap;}
-		.tgg td{
-			border-bottom: 1px solid #c0c0c0;
-			border-collapse: collapse;
-			border-top:0px;
-			border-bottom:0px;
-			font-family:Helvetica, sans-serif;
-			font-size:11px;
-			white-space: pre-wrap;
-			overflow:hidden;
-			padding:1px 1px;
-			word-break:normal;}
-			.tgg th{
-				border-bottom: 1px solid #c0c0c0;
-				border-collapse: collapse;
-				border-top:0px;
-				border-bottom:0px;
-				font-family:Helvetica, sans-serif;
-				font-size:11px;
-				white-space: pre-wrap;
-				overflow:hidden;
-				padding:1px 1px;
-				word-break:normal;;
-			}
-			.tgg .tgg-w84r{background-color:#9b9b9b;border-color:##c0c0c0;font-weight:bold;text-align:left;vertical-align:top;white-space: pre-wrap;
-				padding:3px 3px;}
-				.tgg .tgg-73oq{border-color:##c0c0c0;text-align:left;vertical-align:top;white-space: pre-wrap;}
-				.tgg .tgg-0lax{text-align:left;vertical-align:top}
 
-				</style>
+		$msg3 = '</mark><br></label><label>     <b>Solicitação:</b>'. $dataIn.'<b>  Finalização: </b>'. $dataOut.'<br></label><label><b>Tipo de impressão: </b>'.$tipo.'<br></label>
+		<label><b>Material:</b>'. $material.' - '.$cor.'<br><br></label><label>  
+		</label></th><table class="tgg"width=270>
+		<thead><tr><th class="tgg-w84r"></th><th class="tgg-w84r">'.$quantidade.' Modelos      - '.'      Nº '.$pedidoId.' - '. $pedidoNome .'</th>
+		</tr>
+		</thead>';
+		$flag=1;
+	}
+	$msg4 ='<tbody >'; 
 
+	if($flagif ==1){
+	    if($row_usuario['nome_planner_plan_mio'] != NULL){
+	       	$msg5 = $msg5.'<tr><td class="tgg-0lax"></td><td class="tgg-0lax">' .$row_usuario['nome_planner_plan_mio'] . '</td></tr>'; 
+	    }
+	}
 
+	if($flagif ==2){
+	    if($row_usuario['nome_arquivo_original'] != NULL){
+	       	$msg5 = $msg5.'<tr><td class="tgg-0lax"></td><td class="tgg-0lax">' .$row_usuario['nome_arquivo_original'] . '</td></tr>'; 
+	    }
+	}
+	
+    $msg6='</th></tr>';
+}
+$msg7='</tbody><div style="page-break-after: always;"></div><!--   Core   -->
+<script src="./assets/js/plugins/jquery/dist/jquery.min.js"></script>
+<!--   Optional JS   -->
+<script src="./assets/js/plugins/chart.js/dist/Chart.min.js"></script>
+<script src="./assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
+<!--   Argon JS   -->
+<script src="./assets/js/argon-dashboard.min.js?v=1.1.0"></script>
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>';
 
-				<title></title>
-				</head><font size="1" face="Helvetica">  
-				<p   >   
-				<img src="http://www.labpronto.com.br/hub/assets/img/brand/blue.jpg" align="left"style="width:163px;height:57px;"><div align="right">
-				<br><b>CNPJ:</b> 37.605.824/0001-03<br>Av. Amintas Barros, 3700 Sala 1907 <br> Lagoa Nova - Natal/RN<br>
+$html = file_get_contents("pagvazia.php");
+$dompdf->setPaper('A6', 'portrait');
 
-				(84) 98634-6730<br>
-				</div>
-				</p>
-
-				';
-
-
-
-				$flag=0;
-				while($row_usuario = mysqli_fetch_assoc($buscar)){
-
-					$pedidoId = $row_usuario['id_solicitacao'];
-					$pedidoNome = $row_usuario['identificacao_pct_solicitacao'];
-					$usuario = $row_usuario['nome_usuario'];
-
-					$dataformat = new DateTime($row_usuario['data_solicitacao']);
-					$dataIn2 = $dataformat->format('Y-m-d H:i:s');
-				    $dataIn = date('d/m/Y H:i', strtotime($dataIn2. ' -3 hours'));
-
-
-					$dataformat = new DateTime($row_usuario['finalizacao_solicitacao']);
-					$dataOut2 = $dataformat->format('Y-m-d H:i:s');
-				    $dataOut = date('d/m/Y H:i', strtotime($dataOut2. ' -3 hours'));
-
-					$cor = $row_usuario['cor_impressao'];
-					$material = $row_usuario['material_impressao'];
-					$tipo = $row_usuario['tipo_impressao'];
-					$quantidade = $row_usuario['quantidade_solicitacao'];
-					$id_endereco = $row_usuario['id_endereco'];
-					if($row_usuario['complemento_endereco']==NULL){
-						$endereco = $row_usuario['logradouro_endereco'].", ".$row_usuario['numero_endereco'].", ".$row_usuario['bairro_endereco'].", ".$row_usuario['cidade_endereco']." - ".$row_usuario['cep_endereco'];
-					}
-					else{
-						$endereco = $row_usuario['logradouro_endereco'].", ".$row_usuario['numero_endereco']." - ".$row_usuario['complemento_endereco'].", ".$row_usuario['bairro_endereco'].", ".$row_usuario['cidade_endereco']." - ".$row_usuario['cep_endereco'];
-					}
-
-					if($flag==0){
-						$msg1 = '<label><div align="right"><img src="https://www.medi3d.com.br/hub/qrcodepng.php?id='. $codigoQr.'" align="right"style="width:85px;height:85px;"></div><div align="left"><br></label>
-						<div align="left"><b>Solicitação nº '.$pedidoId.' - '. $pedidoNome .'</b><br><br></div>
-						<label><b>Solicitante: </b><mark>'. $usuario.'</mark><br></label>
-						<label><b>Endereço: </b><mark>';
-						if($id_endereco==1){
-							$msg2='Retirada';
-						}
-						else{
-							$msg2=$endereco;
-						}
-
-						$msg3 = '</mark><br></label><label>     <b>Solicitação:</b>'. $dataIn.'<b>  Finalização: </b>'. $dataOut.'<br></label><label><b>Tipo de impressão: </b>'.$tipo.'<br></label>
-						<label><b>Material:</b>'. $material.' - '.$cor.'<br><br></label><label>  
-				      </label></th><table class="tgg"width=270>
-						<thead><tr><th class="tgg-w84r"></th><th class="tgg-w84r">'.$quantidade.' Modelos      - '.'      Nº '.$pedidoId.' - '. $pedidoNome .'</th>
-						</tr>
-						</thead>';
-						$flag=1;
-					}
-					$msg4 ='<tbody >'; 
-
-
-
-				if($flagif ==1){
-	       			if($row_usuario['nome_planner_plan_mio'] != NULL){
-	       				$msg5 = $msg5.'<tr><td class="tgg-0lax"></td><td class="tgg-0lax">' .$row_usuario['nome_planner_plan_mio'] . '</td></tr>'; 
-	       			}
-				}
-
-				if($flagif ==2){
-	       			if($row_usuario['nome_arquivo_original'] != NULL){
-	       				$msg5 = $msg5.'<tr><td class="tgg-0lax"></td><td class="tgg-0lax">' .$row_usuario['nome_arquivo_original'] . '</td></tr>'; 
-	       			}
-				}
-
-
-
-
-
-       			
-       			$msg6='</th></tr>';
-				}
-				$msg7='</tbody><div style="page-break-after: always;"></div><!--   Core   -->
-				<script src="./assets/js/plugins/jquery/dist/jquery.min.js"></script>
-				<!--   Optional JS   -->
-				<script src="./assets/js/plugins/chart.js/dist/Chart.min.js"></script>
-				<script src="./assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
-				<!--   Argon JS   -->
-				<script src="./assets/js/argon-dashboard.min.js?v=1.1.0"></script>
-				<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>';
-
-
-
-
-
-
-				$html = file_get_contents("pagvazia.php");
-
-
-				$dompdf->setPaper('A6', 'portrait');
-
-       	//$html = "http://localhost/hub/paginaDomPdf?id_solicitacao_arquivo=". $id_solicitacao_arquivo;
-
-
-
-
-
-       	//$dompdf->load_html(utf8_decode($html));
-
-       	//$dompdf->loadHTML('<h1>Tessssst</h1>');
-       	//$dompdf->loadHTML(file_get_contents("paginaDomPdf.php?id_solicitacao_arquivo=104"));
+//$html = "http://localhost/hub/paginaDomPdf?id_solicitacao_arquivo=". $id_solicitacao_arquivo;
+//$dompdf->load_html(utf8_decode($html));
+//$dompdf->loadHTML('<h1>Tessssst</h1>');
+//$dompdf->loadHTML(file_get_contents("paginaDomPdf.php?id_solicitacao_arquivo=104"));
 
 /*$dompdf->loadHTML('<html>
 
@@ -274,14 +281,6 @@ $eee = $msg . $msg1 . $msg2 . $msg3 .$msg4 .$msg5 . $msg6 . $msg7;
 
 $msgenvio = utf8_encode($eee);
 $dompdf->load_html(utf8_decode($msgenvio));
-
-
-//$dompdf->load_html($eee);
-//$dompdf->load_html($mensagem2);
-//$dompdf->load_html($mensagem3);
-//$dompdf->load_html($mensagemHTML);
-
-
 $dompdf->render();
 //header('Content-type: application/pdf');
 //$dompdf->stream("etiqueta.pdf", array(true)); //já salva o arquivo	
